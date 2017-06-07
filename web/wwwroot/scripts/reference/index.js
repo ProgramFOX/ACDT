@@ -14,6 +14,15 @@ function updateCharts() {
     updateOne("cheat");
 }
 
+function generateLabels(step) {
+    var count = 100 / step + 1;
+    var labels = [];
+    for (var i = 0; i < count; i++) {
+        labels.push(i * step);
+    }
+    return labels;
+}
+
 function updateOne(cl) {
     var engine = document.getElementById("compareEngineDropdown").value;
     var minRating = document.getElementById("minRatingDropdown").value;
@@ -39,7 +48,7 @@ function updateOne(cl) {
             charts[cl] = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: new Array(100 / parseFloat(step) + 1),
+                    labels: generateLabels(parseFloat(step)),
                     datasets: [{
                         label: 'Distribution',
                         data: dataReq.responseText.split(',').map(Number)

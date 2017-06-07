@@ -21,14 +21,23 @@ type ReferenceController(referenceDbRepo : IReferenceDbRepo) =
         | "cheat" | "legit" ->
             match engine with
             | "sjeng" | "stockfish" | "max" ->
-                match speed with
-                | "bullet" | "blitz" | "classical" | "all" ->
-                    match step with
-                    | 5 ->
-                        referenceDbRepo.GetDistribution cheatOrLegit engine step minRating maxRating speed |>
-                        List.map (fun x -> x.ToString()) |>
-                        String.concat "," |>
-                        this.Content
+                match minRating with
+                | 0 | 2100 | 2200 | 2300 | 2400 | 2500 | 2600 | 2700 | 2800 | 2900 ->
+                    match maxRating with
+                    | 2100 | 2200 | 2300 | 2400 | 2500 | 2600 | 2700 | 2800 | 2900 | 3000 ->
+                        match (minRating, maxRating) with
+                        | (x, y) when x < y ->
+                            match speed with
+                            | "bullet" | "blitz" | "classical" | "all" ->
+                                match step with
+                                | 5 ->
+                                    referenceDbRepo.GetDistribution cheatOrLegit engine step minRating maxRating speed |>
+                                    List.map (fun x -> x.ToString()) |>
+                                    String.concat "," |>
+                                    this.Content
+                                | _ -> this.Content("") 
+                            | _ -> this.Content("")
+                        | _ -> this.Content("")
                     | _ -> this.Content("")
                 | _ -> this.Content("")
             | _ -> this.Content("")

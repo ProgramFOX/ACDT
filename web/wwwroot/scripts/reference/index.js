@@ -16,8 +16,8 @@ function updateCharts() {
 
 function updateOne(cl) {
     var engine = document.getElementById("compareEngineDropdown").value;
-    var minRating = document.getElementById("minRatingInput").value;
-    var maxRating = document.getElementById("maxRatingInput").value;
+    var minRating = document.getElementById("minRatingDropdown").value;
+    var maxRating = document.getElementById("maxRatingDropdown").value;
     var speed = document.getElementById("speedDropdown").value;
     var step = document.getElementById("stepInput").value;
 

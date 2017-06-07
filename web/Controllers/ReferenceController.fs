@@ -23,10 +23,13 @@ type ReferenceController(referenceDbRepo : IReferenceDbRepo) =
             | "sjeng" | "stockfish" | "max" ->
                 match speed with
                 | "bullet" | "blitz" | "classical" | "all" ->
-                    referenceDbRepo.GetDistribution cheatOrLegit engine step minRating maxRating speed |>
-                    List.map (fun x -> x.ToString()) |>
-                    String.concat "," |>
-                    this.Content
+                    match step with
+                    | 5 ->
+                        referenceDbRepo.GetDistribution cheatOrLegit engine step minRating maxRating speed |>
+                        List.map (fun x -> x.ToString()) |>
+                        String.concat "," |>
+                        this.Content
+                    | _ -> this.Content("")
                 | _ -> this.Content("")
             | _ -> this.Content("")
         | _ -> this.Content("")

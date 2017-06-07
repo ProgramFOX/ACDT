@@ -1,0 +1,29 @@
+@section Title {Reference data}
+@section AddToHead {
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.bundle.min.js"></script>
+    <script type="text/javascript" src="@Url.Content("~/scripts/reference/index.js")"></script>
+}
+
+<h1>Reference data</h1>
+
+<form>
+    Engine to compare against:
+    <select id="compareEngineDropdown">
+        <option value="max" selected>max(Sjeng, Stockfish)</option>
+        <option value="sjeng">Sjeng</option>
+        <option value="stockfish">Stockfish</option>
+    </select><br>
+    Min. rating: <input type="number" id="minRatingInput" value="0"><br>
+    Max. rating: <input type="number" id="maxRatingInput" value="3000"><br>
+    Speed:
+    <select id="speedDropdown">
+        <option value="all" selected>All</option>
+        <option value="bullet">Bullet</option>
+        <option value="blitz">Blitz</option>
+        <option value="classical">Classical</option>
+    </select><br>
+    Distribution graph steps (in %): <input type="number" id="stepInput" value="5" disabled="disabled"><br>
+    <button id="updateBtn">Update</button>
+</form>
+<canvas id="legit-distribution" width="400" height="300"></canvas>
+<canvas id="cheat-distribution" width="400" height="300"></canvas>

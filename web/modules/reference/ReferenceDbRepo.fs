@@ -8,7 +8,7 @@ open Microsoft.Extensions.Options
 open System
 
 type IReferenceDbRepo =
-    abstract member GetDistribution: string -> string -> int -> int -> int -> string -> list<int64>
+    abstract member GetDistribution: string -> string -> int -> int -> int -> string -> list<int>
 
 type ReferenceDbRepo(settings : IOptions<Settings>) =
     let extractedSettings = settings.Value
@@ -19,7 +19,7 @@ type ReferenceDbRepo(settings : IOptions<Settings>) =
                          BsonDocument.Parse(
                              String.Format("{{ legit: {0}, {1}: {{ $gte: {2}, $lt: {3} }}, rating: {{ $gte: {4}, $lte: {5} }} {6} }}", (if legit then "true" else "false"), engine, (center - dist) / 100.0, (center + dist) / 100.0, minRating, maxRating, (if speed.Equals("all") then "" else ", speed: \"" + speed + "\""))
                          ))
-        collection.Find(filter).Count()
+        int(collection.Find(filter).Count())
 
 
     interface IReferenceDbRepo with

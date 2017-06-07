@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>@RenderSection("Title") | Antichess Cheat Detection Tools</title>
+        @if (IsSectionDefined("AddToHead")) {
+            RenderSection("AddTohead");
+        }
+    </head>
+    <body>
+        @RenderBody()
+    </body>
+</html>

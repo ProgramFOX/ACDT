@@ -10,7 +10,8 @@ type PlayerController(referenceDbRepo: IReferenceDbRepo) =
     [<Route("/Player/{lookup}/{name}")>]
     member this.GetPlayer(lookup : string, name : string) =
         let lowerLookup = lookup.ToLower()
+        let lowerName = name.ToLower()
         match lowerLookup with
-        | "reference" -> this.Content(referenceDbRepo.GetGamesByPlayer(name).Count.ToString())
+        | "reference" -> this.Content(referenceDbRepo.GetGamesByPlayer(lowerName).Count.ToString())
         | "investiage" -> this.Content("not yet implemented")
         | _ -> this.Content("Invalid lookup type.")

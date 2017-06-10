@@ -1,14 +1,40 @@
 namespace AntichessCheatDetection.Modules.Reference
 
-type Reference(_id, max, sjeng_full, sjeng, stockfish_full, stockfish, rating, legit, speed, player, game_id) =
-    member this.Id = _id
-    member this.Max = max
-    member this.SjengFull = sjeng_full
-    member this.Sjeng = sjeng
-    member this.StockfishFull = stockfish_full
-    member this.Stockfish = stockfish
-    member this.Rating = rating
-    member this.Legit = legit
-    member this.Speed = speed
-    member this.Player = player
-    member this.GameId = game_id
+open MongoDB.Bson.Serialization.Attributes
+open MongoDB.Bson
+
+open System.Collections.Generic
+
+type Reference() =
+    [<BsonElement("_id")>]
+    member val Id = ObjectId.Empty with get, set
+
+    [<BsonElement("max")>]
+    member val Max : float = 0.0 with get, set
+
+    [<BsonElement("sjeng_full")>]
+    member val SjengFull : List<int> = null with get, set
+
+    [<BsonElement("sjeng")>]
+    member val Sjeng : float = 0.0 with get, set
+
+    [<BsonElement("stockfish_full")>]
+    member val StockfishFull : List<int> = null with get, set
+
+    [<BsonElement("stockfish")>]
+    member val Stockfish : float = 0.0 with get, set
+
+    [<BsonElement("rating")>]
+    member val Rating : int = 0 with get, set
+
+    [<BsonElement("legit")>]
+    member val Legit : bool = true with get, set
+
+    [<BsonElement("speed")>]
+    member val Speed : string = null with get, set
+
+    [<BsonElement("player")>]
+    member val Player : string = null with get, set
+
+    [<BsonElement("game_id")>]
+    member val GameId : string = null with get, set

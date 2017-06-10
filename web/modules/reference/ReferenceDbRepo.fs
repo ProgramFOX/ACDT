@@ -6,9 +6,11 @@ open MongoDB.Driver
 open MongoDB.Bson
 open Microsoft.Extensions.Options
 open System
+open System.Collections.Generic
 
 type IReferenceDbRepo =
     abstract member GetDistribution: string -> string -> int -> int -> int -> string -> list<int>
+    abstract member GetGamesByPlayer: string -> List<Reference>
 
 type ReferenceDbRepo(settings : IOptions<Settings>) =
     let extractedSettings = settings.Value
@@ -25,3 +27,6 @@ type ReferenceDbRepo(settings : IOptions<Settings>) =
     interface IReferenceDbRepo with
         member this.GetDistribution legitOrCheat engine step minRating maxRating speed =
             [ for i in 0 .. step .. 100 -> countClosestTo (legitOrCheat.Equals "legit") engine (double i) (double step / 2.0) minRating maxRating speed]
+        
+        member this.GetGamesByPlayer player =
+            collection.Find(Builders<Reference>.Filter.Eq(StringFieldDefinition<Reference, string>("player"), player)).ToList()

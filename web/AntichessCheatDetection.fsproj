@@ -5,7 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="modules/**/*.fs" />
+    <Compile Include="modules/configuration/*.fs" />
+    <Compile Include="modules/reference/*.fs" />
+    <Compile Include="modules/game/*.fs" />
+    <Compile Include="modules/player/*.fs" />
     <Compile Include="Controllers/*.fs" />
     <Compile Include="Startup.fs" />
     <Compile Include="Program.fs" />

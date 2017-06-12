@@ -17,3 +17,6 @@ module PlayerInfoFetcher =
         | "stockfish" -> List.map (fun (x : Reference) -> x.Stockfish) gameList
         | "max" -> List.map (fun (x : Reference) -> x.Max) gameList
         | _ -> raise(System.Exception())
+    
+    let roundToClosestStepMultiple step gameList = 
+        List.map (fun x -> floor(x / step) * step) gameList

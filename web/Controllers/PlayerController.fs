@@ -20,5 +20,5 @@ type PlayerController(referenceDbRepo: IReferenceDbRepo) =
             Seq.map string |>
             String.concat "," |>
             this.Content
-        | "investiage" -> this.Content("not yet implemented")
+        | "investigate" -> this.Content("not yet implemented")
         | _ -> this.Content("Invalid lookup type.")

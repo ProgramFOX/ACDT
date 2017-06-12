@@ -7,3 +7,6 @@ module PlayerInfoFetcher =
         match speed with
         | "all" -> gameList
         | _ -> List.filter (fun x -> x.Speed = speed) gameList
+
+    let filterRating minR maxR (gameList : Reference list) =
+        List.filter (fun (x : Reference) -> minR <= x.Rating && maxR >= x.Rating) gameList

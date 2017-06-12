@@ -5,23 +5,23 @@ open AntichessCheatDetection.Modules.Reference
 open Microsoft.FSharp.Collections
 
 module PlayerInfoProcessor =
-    let filterSpeed speed (gameList : Reference list) =
+    let filterSpeed speed (gameList : seq<Reference>) =
         match speed with
         | "all" -> gameList
-        | _ -> List.filter (fun x -> x.Speed = speed) gameList
+        | _ -> Seq.filter (fun x -> x.Speed = speed) gameList
 
-    let filterRating minR maxR (gameList : Reference list) =
-        List.filter (fun (x : Reference) -> minR <= x.Rating && maxR >= x.Rating) gameList
+    let filterRating minR maxR (gameList : seq<Reference>) =
+        Seq.filter (fun (x : Reference) -> minR <= x.Rating && maxR >= x.Rating) gameList
     
     let takeEngineValues engine gameList =
         match engine with
-        | "sjeng" -> List.map (fun (x : Reference) -> x.Sjeng) gameList
-        | "stockfish" -> List.map (fun (x : Reference) -> x.Stockfish) gameList
-        | "max" -> List.map (fun (x : Reference) -> x.Max) gameList
+        | "sjeng" -> Seq.map (fun (x : Reference) -> x.Sjeng) gameList
+        | "stockfish" -> Seq.map (fun (x : Reference) -> x.Stockfish) gameList
+        | "max" -> Seq.map (fun (x : Reference) -> x.Max) gameList
         | _ -> raise(System.Exception())
     
     let roundToClosestStepMultiple step engineValues = 
-        List.map (fun x -> floor(x / step) * step) engineValues
+        Seq.map (fun x -> floor(x / step) * step) engineValues
     
     let countByStep engineValues =
         Seq.countBy id engineValues

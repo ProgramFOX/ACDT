@@ -4,7 +4,7 @@ open AntichessCheatDetection.Modules.Reference
 
 open Microsoft.FSharp.Collections
 
-module PlayerInfoFetcher =
+module PlayerInfoProcessor =
     let filterSpeed speed (gameList : Reference list) =
         match speed with
         | "all" -> gameList

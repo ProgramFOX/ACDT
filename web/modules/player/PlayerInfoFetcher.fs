@@ -2,6 +2,8 @@ namespace AntichessCheatDetection.Modules.Player
 
 open AntichessCheatDetection.Modules.Reference
 
+open Microsoft.FSharp.Collections
+
 module PlayerInfoFetcher =
     let filterSpeed speed (gameList : Reference list) =
         match speed with
@@ -18,5 +20,23 @@ module PlayerInfoFetcher =
         | "max" -> List.map (fun (x : Reference) -> x.Max) gameList
         | _ -> raise(System.Exception())
     
-    let roundToClosestStepMultiple step gameList = 
-        List.map (fun x -> floor(x / step) * step) gameList
+    let roundToClosestStepMultiple step engineValues = 
+        List.map (fun x -> floor(x / step) * step) engineValues
+    
+    let countByStep engineValues =
+        Seq.countBy id engineValues
+    
+    let sortCountsByStep counts =
+        Seq.sortBy fst counts
+    
+    let onlyGetCountValues counts =
+        Seq.map snd counts
+    
+    let getPlayerDistribution speed minRating maxRating engine step gameList =
+        gameList |> filterSpeed speed
+                 |> filterRating minRating maxRating
+                 |> takeEngineValues engine
+                 |> roundToClosestStepMultiple step
+                 |> countByStep
+                 |> sortCountsByStep
+                 |> onlyGetCountValues

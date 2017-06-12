@@ -21,7 +21,7 @@ module PlayerInfoProcessor =
         | _ -> raise(System.Exception())
     
     let roundToClosestStepMultiple step engineValues = 
-        Seq.map (fun x -> floor(x / step) * step) engineValues
+        Seq.map (fun x -> floor(x * 100.0 / step) * step) engineValues
     
     let countByStep engineValues =
         Seq.countBy id engineValues

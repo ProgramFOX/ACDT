@@ -10,3 +10,10 @@ module PlayerInfoFetcher =
 
     let filterRating minR maxR (gameList : Reference list) =
         List.filter (fun (x : Reference) -> minR <= x.Rating && maxR >= x.Rating) gameList
+    
+    let takeEngineValues engine gameList =
+        match engine with
+        | "sjeng" -> List.map (fun (x : Reference) -> x.Sjeng) gameList
+        | "stockfish" -> List.map (fun (x : Reference) -> x.Stockfish) gameList
+        | "max" -> List.map (fun (x : Reference) -> x.Max) gameList
+        | _ -> raise(System.Exception())

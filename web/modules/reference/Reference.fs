@@ -6,9 +6,6 @@ open MongoDB.Bson
 open System.Collections.Generic
 
 type Reference() =
-    [<BsonElement("_id")>]
-    member val Id = ObjectId.Empty with get, set
-
     [<BsonElement("max")>]
     member val Max : float = 0.0 with get, set
 

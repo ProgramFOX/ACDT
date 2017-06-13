@@ -29,4 +29,5 @@ type ReferenceDbRepo(settings : IOptions<Settings>) =
             [ for i in 0 .. step .. 100 -> countClosestTo (legitOrCheat.Equals "legit") engine (double i) (double step / 2.0) minRating maxRating speed]
         
         member this.GetGamesByPlayer player =
-            collection.Find(Builders<Reference>.Filter.Eq(StringFieldDefinition<Reference, string>("player"), player)).ToList()
+            collection.Find(Builders<Reference>.Filter.Eq(StringFieldDefinition<Reference, string>("player"), player))
+                .Project<Reference>(BsonDocumentProjectionDefinition<Reference, Reference>(BsonDocument.Parse("{ _id: 0 }"))).ToList()

@@ -21,6 +21,57 @@ function distributionObjectToList(step, dist) {
     return list;
 }
 
+function generateDetailForOneGame(game) {
+    var rootDiv = document.createElement("div");
+
+    var lichessLink = document.createElement("a");
+    lichessLink.setAttribute("href", "https://lichess.org/" + game.gameId);
+    lichessLink.textContent = "Game on Lichess: " + game.gameId;
+    rootDiv.appendChild(lichessLink);
+
+    var sjengPar = document.createElement("p");
+    sjengPar.textContent = "Sjeng similarity:";
+    rootDiv.appendChild(sjengPar);
+
+    var sjengDiv = document.createElement("div");
+    for (var i = 0; i < game.sjengFull.length; i++) {
+        var currentMoveComparison = game.sjengFull[i];
+        var background = currentMoveComparison === 0 ? "blue" : (currentMoveComparison === 1 ? "red" : "#444444");
+
+        var currentMoveDiv = document.createElement("div");
+        currentMoveDiv.style.display = "inline-block";
+        currentMoveDiv.style.height = "50px";
+        currentMoveDiv.style.width = "20px";
+        currentMoveDiv.style.border = "1px solid black";
+        currentMoveDiv.style.background = background;
+
+        sjengDiv.appendChild(currentMoveDiv);
+    }
+    rootDiv.appendChild(sjengDiv);
+
+    var sfPar = document.createElement("p");
+    sfPar.textContent = "Stockfish similarity:";
+    rootDiv.appendChild(sfPar);
+
+    var sfDiv = document.createElement("div");
+    for (var i = 0; i < game.stockfishFull.length; i++) {
+        var currentMoveComparison = game.stockfishFull[i];
+        var background = currentMoveComparison === 0 ? "blue" : (currentMoveComparison === 1 ? "red" : "#444444");
+
+        var currentMoveDiv = document.createElement("div");
+        currentMoveDiv.style.display = "inline-block";
+        currentMoveDiv.style.height = "50px";
+        currentMoveDiv.style.width = "20px";
+        currentMoveDiv.style.border = "1px solid black";
+        currentMoveDiv.style.background = background;
+
+        sfDiv.appendChild(currentMoveDiv);
+    }
+    rootDiv.appendChild(sfDiv);
+
+    return rootDiv;
+}
+
 window.addEventListener("load", function() {
     document.getElementById("updateBtn").addEventListener("click", function(e) {
         e.preventDefault();
@@ -55,7 +106,14 @@ window.addEventListener("load", function() {
                         }]
                     },
                     options: { responsive: false }
-                })
+                });
+
+                var sortedGames = _.orderBy(games, [engine], ["desc"]);
+                document.getElementById("gameDetails").innerHTML = "";
+                for (var i = 0; i < sortedGames.length; i++) {
+                    document.getElementById("gameDetails").appendChild(generateDetailForOneGame(sortedGames[i]));
+                    document.getElementById("gameDetails").appendChild(document.createElement("hr"));
+                }
             }
         };
         dataReq.send();

@@ -8,8 +8,11 @@ open AntichessCheatDetection.Modules.Player
 type PlayerController(referenceDbRepo: IReferenceDbRepo) =
     inherit Controller()
 
-    [<Route("/Player/{lookup}/{name}")>]
-    member this.GetPlayer(lookup : string, name : string, speed : string, minRating : int, maxRating: int) : IActionResult =
+    [<Route("/Player")>]
+    member this.Index() = this.View()
+
+    [<Route("/Player/{lookup}/{name}/Games")>]
+    member this.GetPlayerGames(lookup : string, name : string, speed : string, minRating : int, maxRating: int) : IActionResult =
         let lowerLookup = lookup.ToLower()
         let lowerName = name.ToLower()
         match lowerLookup with

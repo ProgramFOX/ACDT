@@ -1,0 +1,16 @@
+@section Title{Player lookup}
+@section AddToHead {
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
+    <script type="text/javascript" src="@Url.Content("~/scripts/player/index.js")"></script>
+}
+<form>
+    <input type="text" id="nameInput"><br>
+    <select id="lookupInput">
+        <option selected="selected" value="Reference">Reference</option>
+        <option value="Investigate">Investigate</option>
+    </select><br>
+    <button id="updateBtn">Update</button>
+</form>
+<canvas id="distributionCanvas" width="800" height="600"></canvas>
+<div id="gameDetails"></div>

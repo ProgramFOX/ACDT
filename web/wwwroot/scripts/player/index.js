@@ -114,6 +114,10 @@ window.addEventListener("load", function() {
                     document.getElementById("gameDetails").appendChild(generateDetailForOneGame(sortedGames[i]));
                     document.getElementById("gameDetails").appendChild(document.createElement("hr"));
                 }
+
+                if (window.history.pushState) {
+                    window.history.pushState({}, null, "/Player/" + lookup + "/" + playerName);
+                }
             }
         };
         dataReq.send();

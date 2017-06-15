@@ -118,4 +118,16 @@ window.addEventListener("load", function() {
         };
         dataReq.send();
     });
+
+    var pathParts = _.filter(window.location.pathname.split("/"), x => x !== "");
+    if (pathParts.length === 3) {
+        var lkp = pathParts[1].toLowerCase();
+        if (lkp !== "reference" && lkp !== "investigate") {
+            window.location.href = "/Player";
+        }
+
+        document.getElementById("lookupInput").value = lkp === "reference" ? "Reference" : "Investigate";
+        document.getElementById("nameInput").value = pathParts[2];
+        document.getElementById("updateBtn").click();
+    }
 });

@@ -11,6 +11,9 @@ type PlayerController(referenceDbRepo: IReferenceDbRepo) =
     [<Route("/Player")>]
     member this.Index() = this.View()
 
+    [<Route("/Player/{lookup}/{name}")>]
+    member this.IndexWithAdditionalParameters(lookup : string, name : string) = this.View("Index")
+
     [<Route("/Player/{lookup}/{name}/Games")>]
     member this.GetPlayerGames(lookup : string, name : string, speed : string, minRating : int, maxRating: int) : IActionResult =
         let lowerLookup = lookup.ToLower()

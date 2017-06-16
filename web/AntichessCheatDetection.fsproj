@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Include="modules/configuration/*.fs" />
     <Compile Include="modules/reference/*.fs" />
+    <Compile Include="modules/investigate/Investigation.fs" />
+    <Compile Include="modules/investigate/InvestigateDbRepo.fs" />
     <Compile Include="modules/game/*.fs" />
     <Compile Include="modules/player/*.fs" />
     <Compile Include="Controllers/*.fs" />

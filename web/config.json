@@ -1,5 +1,6 @@
 {
     "MongoConnectionString": "mongodb://127.0.0.1:27017",
     "Database": "antichesscheat",
-    "ReferenceCollectionName": "reference"
+    "ReferenceCollectionName": "reference",
+    "InvestigateCollectionName": "investigate"
 }

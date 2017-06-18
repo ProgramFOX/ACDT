@@ -8,15 +8,15 @@ open Microsoft.Extensions.Options
 open System
 open System.Collections.Generic
 
-type IReferenceDbRepo =
+type IInvestigateDbRepo =
     abstract member GetGamesByPlayer: string -> List<Investigation>
 
-type ReferenceDbRepo(settings : IOptions<Settings>) =
+type InvestigateDbRepo(settings : IOptions<Settings>) =
     let extractedSettings = settings.Value
     let collection = MongoClient(extractedSettings.MongoConnectionString : string).GetDatabase(extractedSettings.Database).GetCollection<Investigation>(extractedSettings.InvestigateCollectionName)
 
 
-    interface IReferenceDbRepo with
+    interface IInvestigateDbRepo with
         
         member this.GetGamesByPlayer player =
             collection.Find(Builders<Investigation>.Filter.Eq(StringFieldDefinition<Investigation, string>("player"), player))

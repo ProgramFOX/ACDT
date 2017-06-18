@@ -13,6 +13,7 @@ open Microsoft.Extensions.Logging
 
 open AntichessCheatDetection.Modules.Configuration
 open AntichessCheatDetection.Modules.Reference
+open AntichessCheatDetection.Modules.Investigate
 
 
 type Startup private () =
@@ -35,6 +36,7 @@ type Startup private () =
         services.Configure<Settings>(this.Configuration) |> ignore
 
         services.AddSingleton<IReferenceDbRepo, ReferenceDbRepo>() |> ignore
+        services.AddSingleton<IInvestigateDbRepo, InvestigateDbRepo>() |> ignore
 
     member this.Configure(app: IApplicationBuilder, env: IHostingEnvironment, loggerFactory: ILoggerFactory) =
         if (env.IsDevelopment()) then

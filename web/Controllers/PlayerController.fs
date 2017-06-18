@@ -3,9 +3,10 @@ namespace AntichessCheatDetection.Controllers
 open Microsoft.AspNetCore.Mvc
 
 open AntichessCheatDetection.Modules.Reference
+open AntichessCheatDetection.Modules.Investigate
 open AntichessCheatDetection.Modules.Player
 
-type PlayerController(referenceDbRepo: IReferenceDbRepo) =
+type PlayerController(referenceDbRepo: IReferenceDbRepo, investigateDbRepo: IInvestigateDbRepo) =
     inherit Controller()
 
     [<Route("/Player")>]
@@ -24,5 +25,9 @@ type PlayerController(referenceDbRepo: IReferenceDbRepo) =
             PlayerInfoProcessor.filterSpeed speed |>
             PlayerInfoProcessor.filterRating minRating maxRating |>
             this.Json :> IActionResult
-        | "investigate" -> this.Content("not yet implemented") :> IActionResult
+        | "investigate" ->
+            investigateDbRepo.GetGamesByPlayer lowerName |>
+            PlayerInfoProcessor.filterSpeed speed |>
+            PlayerInfoProcessor.filterRating minRating maxRating |>
+            this.Json :> IActionResult
         | _ -> this.Content("Invalid lookup type.") :> IActionResult

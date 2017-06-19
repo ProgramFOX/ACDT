@@ -1,3 +1,4 @@
+(function main() {
 var currentChart = null;
 
 function generateLabels(step) {
@@ -135,3 +136,4 @@ window.addEventListener("load", function() {
         document.getElementById("updateBtn").click();
     }
 });
+})();

@@ -5,3 +5,4 @@ type Settings() =
     member val Database : string = null with get, set
     member val ReferenceCollectionName : string = null with get, set
     member val InvestigateCollectionName : string = null with get, set
+    member val ApiKeyCollectionName : string = null with get, set

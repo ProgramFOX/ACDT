@@ -6,7 +6,6 @@ open MongoDB.Driver
 open MongoDB.Bson
 open Microsoft.Extensions.Options
 open System
-open System.Collections.Generic
 open System.Security.Cryptography
 open System.Text
 

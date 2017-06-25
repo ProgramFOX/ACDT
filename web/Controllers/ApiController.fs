@@ -26,3 +26,9 @@ type ApiController(apiKeyDbRepo: IApiKeyDbRepo, queueDbRepo: IQueueDbRepo) =
     member this.Queue(key: string) =
         let nextQueueItem = queueDbRepo.GetNextQueueItem()
         this.Content(if isNull nextQueueItem then "" else nextQueueItem.Name)
+    
+    [<Route("/Api/QueueItemInProgress")>]
+    member this.QueueItemInProgress(key: string, playerName: string) =
+        match queueDbRepo.SetInProgress(playerName) with
+        | true -> StatusCodeResult(200)
+        | _ -> StatusCodeResult(500)

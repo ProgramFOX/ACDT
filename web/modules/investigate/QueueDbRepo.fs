@@ -17,4 +17,4 @@ type QueueDbRepo(settings: IOptions<Settings>) =
 
     interface IQueueDbRepo with
         member this.GetNextQueueItem() =
-            collection.Find(BsonDocumentFilterDefinition<QueueItem>(BsonDocument())).Sort(Builders<QueueItem>.Sort.Ascending(new StringFieldDefinition<QueueItem>("requested"))).FirstOrDefault()
+            collection.Find(Builders<QueueItem>.Filter.Eq(new StringFieldDefinition<QueueItem, QueueItemStatus>("status"), QueueItemStatus.Unprocessed)).Sort(Builders<QueueItem>.Sort.Ascending(new StringFieldDefinition<QueueItem>("requested"))).FirstOrDefault()

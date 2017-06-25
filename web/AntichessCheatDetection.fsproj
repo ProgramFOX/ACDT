@@ -9,6 +9,7 @@
     <Compile Include="modules/reference/*.fs" />
     <Compile Include="modules/investigate/Investigation.fs" />
     <Compile Include="modules/investigate/InvestigateDbRepo.fs" />
+    <Compile Include="modules/investigate/QueueItemStatus.fs" />
     <Compile Include="modules/investigate/QueueItem.fs" />
     <Compile Include="modules/investigate/QueueDbRepo.fs" />
     <Compile Include="modules/player/*.fs" />

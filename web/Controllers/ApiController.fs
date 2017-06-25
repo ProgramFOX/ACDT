@@ -14,8 +14,6 @@ type ApiController(apiKeyDbRepo: IApiKeyDbRepo, queueDbRepo: IQueueDbRepo) =
         | "POST" ->
             let ok, apiKeyO = context.ActionArguments.TryGetValue("key")
             let apiKey = string apiKeyO
-            System.Console.WriteLine(ok)
-            System.Console.WriteLine(apiKey)
             match ok && apiKeyDbRepo.IsValidKey(apiKey) with
             | true ->
                 base.OnActionExecuting(context)

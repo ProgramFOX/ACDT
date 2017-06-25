@@ -11,6 +11,7 @@ open System.Collections.Generic
 type IQueueDbRepo =
     abstract member GetNextQueueItem : unit -> QueueItem
     abstract member SetInProgress : string -> bool
+    abstract member SetAsProcessed : string -> bool
 
 type QueueDbRepo(settings: IOptions<Settings>) =
     let extractedSettings = settings.Value
@@ -24,4 +25,10 @@ type QueueDbRepo(settings: IOptions<Settings>) =
             collection.UpdateMany(
                 Builders<QueueItem>.Filter.Eq(new StringFieldDefinition<QueueItem, QueueItemStatus>("status"), QueueItemStatus.Unprocessed),
                 Builders<QueueItem>.Update.Set(new StringFieldDefinition<QueueItem, QueueItemStatus>("status"), QueueItemStatus.InProgress)
+            ).IsAcknowledged
+        
+        member this.SetAsProcessed (playerName : string) =
+            collection.UpdateMany(
+                Builders<QueueItem>.Filter.Ne(new StringFieldDefinition<QueueItem, QueueItemStatus>("status"), QueueItemStatus.Processed),
+                Builders<QueueItem>.Update.Set(new StringFieldDefinition<QueueItem, QueueItemStatus>("status"), QueueItemStatus.Processed)
             ).IsAcknowledged

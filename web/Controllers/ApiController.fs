@@ -6,7 +6,11 @@ open Microsoft.AspNetCore.Mvc.Filters
 open AntichessCheatDetection.Modules.Api
 open AntichessCheatDetection.Modules.Investigate
 
-type ApiController(apiKeyDbRepo: IApiKeyDbRepo, queueDbRepo: IQueueDbRepo) =
+open Newtonsoft.Json
+
+open System.Collections.Generic
+
+type ApiController(apiKeyDbRepo: IApiKeyDbRepo, queueDbRepo: IQueueDbRepo, investigateDbRepo: IInvestigateDbRepo) =
     inherit Controller()
 
     override this.OnActionExecuting (context : ActionExecutingContext) =
@@ -32,3 +36,7 @@ type ApiController(apiKeyDbRepo: IApiKeyDbRepo, queueDbRepo: IQueueDbRepo) =
         match queueDbRepo.SetInProgress(playerName) with
         | true -> StatusCodeResult(200)
         | _ -> StatusCodeResult(500)
+    
+    [<Route("/Api/PlayerGamesProcessed")>]
+    member this.PlayerGamesProcessed(key: string, playerName: string, games: IEnumerable<Investigation>) =
+        investigateDbRepo.InsertInvestigations games

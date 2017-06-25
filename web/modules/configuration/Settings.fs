@@ -6,3 +6,4 @@ type Settings() =
     member val ReferenceCollectionName : string = null with get, set
     member val InvestigateCollectionName : string = null with get, set
     member val ApiKeyCollectionName : string = null with get, set
+    member val QueueCollectionName : string = null with get, set

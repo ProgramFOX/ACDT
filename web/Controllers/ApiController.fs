@@ -4,8 +4,9 @@ open Microsoft.AspNetCore.Mvc
 open Microsoft.AspNetCore.Mvc.Filters
 
 open AntichessCheatDetection.Modules.Api
+open AntichessCheatDetection.Modules.Investigate
 
-type ApiController(apiKeyDbRepo: IApiKeyDbRepo) =
+type ApiController(apiKeyDbRepo: IApiKeyDbRepo, queueDbRepo: IQueueDbRepo) =
     inherit Controller()
 
     override this.OnActionExecuting (context : ActionExecutingContext) =
@@ -21,6 +22,7 @@ type ApiController(apiKeyDbRepo: IApiKeyDbRepo) =
         | _ ->
             context.Result <- this.BadRequest() :> IActionResult
     
-    [<Route("/Api/Queue")>]
+    [<Route("/Api/QueueNext")>]
     member this.Queue() =
-        this.Content("NYI")
+        let nextQueueItem = queueDbRepo.GetNextQueueItem()
+        this.Content(if isNull nextQueueItem then "" else nextQueueItem.Name)

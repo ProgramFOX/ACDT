@@ -3,5 +3,6 @@
     "Database": "antichesscheat",
     "ReferenceCollectionName": "reference",
     "InvestigateCollectionName": "investigate",
-    "ApiKeyCollectionName": "apikeys"
+    "ApiKeyCollectionName": "apikeys",
+    "QueueCollectionName": "queue"
 }

@@ -16,8 +16,9 @@ type InvestigateDbRepo(settings : IOptions<Settings>) =
     let extractedSettings = settings.Value
     let collection = MongoClient(extractedSettings.MongoConnectionString : string).GetDatabase(extractedSettings.Database).GetCollection<Investigation>(extractedSettings.InvestigateCollectionName)
 
-    let gameExistsInDb gameId =
-        collection.Find(Builders<Investigation>.Filter.Eq(StringFieldDefinition<Investigation, string>("game_id"), gameId)).Any()
+    let gameExistsInDb gameId playerName =
+        collection.Find(Builders<Investigation>.Filter.Eq(StringFieldDefinition<Investigation, string>("game_id"), gameId)
+        &&& Builders<Investigation>.Filter.Eq(StringFieldDefinition<Investigation, string>("player"), playerName)).Any()
 
 
     interface IInvestigateDbRepo with
@@ -28,4 +29,4 @@ type InvestigateDbRepo(settings : IOptions<Settings>) =
         
         member this.InsertInvestigations (investigations : seq<Investigation>) =
             for x in investigations do
-                if not (gameExistsInDb x.GameId) then collection.InsertOne x
+                if not (gameExistsInDb x.GameId x.Player) then collection.InsertOne x

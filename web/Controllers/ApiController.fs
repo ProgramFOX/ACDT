@@ -31,10 +31,11 @@ type ApiController(apiKeyDbRepo: IApiKeyDbRepo, queueDbRepo: IQueueDbRepo, inves
     
     [<Route("/Api/QueueItemInProgress")>]
     member this.QueueItemInProgress(key: string, playerName: string) =
-        match queueDbRepo.SetInProgress(playerName) with
+        match queueDbRepo.SetInProgress(playerName.ToLowerInvariant()) with
         | true -> StatusCodeResult(200)
         | _ -> StatusCodeResult(500)
     
     [<Route("/Api/PlayerGamesProcessed")>]
     member this.PlayerGamesProcessed(key: string, playerName: string, games: IEnumerable<Investigation>) =
         investigateDbRepo.InsertInvestigations games
+        queueDbRepo.SetAsProcessed(playerName.ToLowerInvariant())

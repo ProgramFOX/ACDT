@@ -26,13 +26,13 @@ type QueueDbRepo(settings: IOptions<Settings>) =
         
         member this.SetInProgress (playerName : string) =
             collection.UpdateMany(
-                Builders<QueueItem>.Filter.Eq(new StringFieldDefinition<QueueItem, QueueItemStatus>("status"), QueueItemStatus.Unprocessed),
+                Builders<QueueItem>.Filter.Eq(new StringFieldDefinition<QueueItem, QueueItemStatus>("status"), QueueItemStatus.Unprocessed) &&& Builders<QueueItem>.Filter.Eq(new StringFieldDefinition<QueueItem, string>("name"), playerName),
                 Builders<QueueItem>.Update.Set(new StringFieldDefinition<QueueItem, QueueItemStatus>("status"), QueueItemStatus.InProgress)
             ).IsAcknowledged
         
         member this.SetAsProcessed (playerName : string) =
             collection.UpdateMany(
-                Builders<QueueItem>.Filter.Ne(new StringFieldDefinition<QueueItem, QueueItemStatus>("status"), QueueItemStatus.Processed),
+                Builders<QueueItem>.Filter.Ne(new StringFieldDefinition<QueueItem, QueueItemStatus>("status"), QueueItemStatus.Processed) &&& Builders<QueueItem>.Filter.Eq(new StringFieldDefinition<QueueItem, string>("name"), playerName),
                 Builders<QueueItem>.Update.Set(new StringFieldDefinition<QueueItem, QueueItemStatus>("status"), QueueItemStatus.Processed)
             ).IsAcknowledged
         

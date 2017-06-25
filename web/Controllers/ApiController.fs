@@ -6,8 +6,6 @@ open Microsoft.AspNetCore.Mvc.Filters
 open AntichessCheatDetection.Modules.Api
 open AntichessCheatDetection.Modules.Investigate
 
-open Newtonsoft.Json
-
 open System.Collections.Generic
 
 type ApiController(apiKeyDbRepo: IApiKeyDbRepo, queueDbRepo: IQueueDbRepo, investigateDbRepo: IInvestigateDbRepo) =

@@ -7,3 +7,4 @@ stockfish*
 .vscode/
 secret/
 __pycache__/
+/data/

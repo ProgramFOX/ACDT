@@ -6,3 +6,4 @@ obj/
 stockfish*
 .vscode/
 secret/
+__pycache__/

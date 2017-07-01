@@ -1,12 +1,20 @@
 """This script deals with the investigation queue that gets
 filled when moderators request analysis through the web UI."""
 
+from enum import Enum
 import json
+import urllib.parse
 
 import requests
 
 import downloader
 import engine_check
+
+class ApiDownloadStatus(Enum):
+    """An enum that represents possible statuses after doing an API call."""
+    success = 0
+    no_content = 1
+    http_error = 2
 
 def load_api_key():
     """Loads the web API key from secret/apikey.txt"""
@@ -57,6 +65,19 @@ def investigate_one_player(user_id, session, stockfish, sf_info_handler):
                                             game_id)
             )
     return investigations
+
+def next_queue_item(session, api_key, base_url):
+    """Gives the next player name from the investigation queue."""
+    url = urllib.parse.urljoin(base_url, "/Api/QueueNext")
+    response = session.post(url, data={"key": api_key})
+    if response.status_code == 200:
+        name = response.text.strip()
+        if name != "":
+            return ApiDownloadStatus.success, name
+        else:
+            return ApiDownloadStatus.no_content, None
+    else:
+        return ApiDownloadStatus.http_error, None
 
 def main():
     """Main method of script: where the 'real work' happens."""

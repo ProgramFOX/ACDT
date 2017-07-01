@@ -35,13 +35,28 @@ def investigation_from_analysis(engine_check_result, rating, game_created_date,
 def investigate_one_player(user_id, session, stockfish, sf_info_handler):
     """Investigates one player and pushes the result to the server."""
     download_status, downloaded_games = downloader.download_one(user_id, session)
+    investigations = []
     if download_status == downloader.DownloadStatus.success:
         games = json.loads(downloaded_games)
         for game in games:
             moves = game["turns"].split(" ")
             analyze_white = game["players"]["white"]["userId"] == user_id
 
-            engine_check.analyze_one_game(moves, analyze_white, stockfish, sf_info_handler)
+            game_created_date = game["createdAt"]
+            game_speed = game["speed"]
+            user_rating = game["players"]["white" if analyze_white else "black"]["rating"]
+            game_id = game["id"]
+
+            ecr = engine_check.analyze_one_game(moves, analyze_white, stockfish, sf_info_handler)
+            investigations.append(
+                investigation_from_analysis(ecr,
+                                            user_rating,
+                                            game_created_date,
+                                            game_speed,
+                                            user_id,
+                                            game_id)
+            )
+    return investigations
 
 def main():
     """Main method of script: where the 'real work' happens."""

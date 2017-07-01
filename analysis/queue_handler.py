@@ -79,12 +79,15 @@ def next_queue_item(session, api_key, base_url):
     else:
         return ApiDownloadStatus.http_error, None
 
-def main():
+def main(args):
     """Main method of script: where the 'real work' happens."""
+    base_url = args[1]
+
     session = requests.Session()
     api_key = load_api_key()
 
     stockfish, sf_info_handler = engine_check.create_stockfish_instance()
 
 if __name__ == "__main__":
-    main()
+    import sys
+    main(sys.argv)

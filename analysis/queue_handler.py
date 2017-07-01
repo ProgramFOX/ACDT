@@ -13,6 +13,25 @@ def load_api_key():
     with open("analysis/secret/apikey.txt", "r") as file_object:
         return file_object.read().strip()
 
+def investigation_from_analysis(engine_check_result, rating, game_created_date,
+                                speed, player, game_id):
+    """Takes the result of engine_check.analyze_one_game, a few more parameters,
+    and returns an object following the Investigation model (see web)."""
+    sjeng_percentage, sf_percentage, sjeng_full, sf_full = engine_check_result
+    max_percentage = max(sjeng_percentage, sf_percentage)
+    return {
+        "max": max_percentage,
+        "sjengFull": sjeng_full,
+        "sjeng": sjeng_percentage,
+        "stockfishFull": sf_full,
+        "stockfish": sf_percentage,
+        "rating": rating,
+        "gameCreatedDate": game_created_date,
+        "speed": speed,
+        "player": player,
+        "gameId": game_id
+    }
+
 def investigate_one_player(user_id, session, stockfish, sf_info_handler):
     """Investigates one player and pushes the result to the server."""
     download_status, downloaded_games = downloader.download_one(user_id, session)

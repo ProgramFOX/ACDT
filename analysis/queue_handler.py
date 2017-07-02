@@ -51,7 +51,7 @@ def investigate_one_player(user_id, session, stockfish, sf_info_handler):
     if download_status == downloader.DownloadStatus.success:
         games = json.loads(downloaded_games)
         for game in games:
-            moves = game["turns"].split(" ")
+            moves = game["moves"].split(" ")
             analyze_white = game["players"]["white"]["userId"] == user_id
 
             game_created_date = game["createdAt"]

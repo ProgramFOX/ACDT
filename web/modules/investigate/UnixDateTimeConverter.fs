@@ -15,4 +15,4 @@ type UnixDateTimeConverter() =
     
     override this.ReadJson(reader, objectType, existingValue, serializer) =
         let unixMs = Int64.Parse(string reader.Value)
-        DateTimeOffset.FromUnixTimeMilliseconds(unixMs).DateTime :> obj
+        TimeZoneInfo.ConvertTime(DateTimeOffset.FromUnixTimeMilliseconds(unixMs).DateTime, TimeZoneInfo.Utc) :> obj

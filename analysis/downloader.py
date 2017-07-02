@@ -51,6 +51,7 @@ def download_one(user_id, session):
                "&mode=1" \
                "&sort.field=d" \
                "&sort.order=desc" \
+               "&turnsMin=5" \
                "&_={}"
 
     adv_search_1 = session.get(base_url.format(user_id, 1, 0, 60, user_id, time.time() * 1000))

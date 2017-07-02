@@ -117,7 +117,11 @@ def handle_queue(args, cancellation_token):
     while not cancellation_token.is_cancellation_requested():
         next_fetched, next_player_or_http_result = next_queue_item(session, api_key, base_url)
         if next_fetched == ApiResponseStatus.no_content:
-            time.sleep(120)
+            for _ in range(120):
+                if not cancellation_token.is_cancellation_requested():
+                    time.sleep(1)
+                else:
+                    break
             continue
         elif next_fetched == ApiResponseStatus.http_error:
             print("ERROR: Status code " + str(next_player_or_http_result) + ". Aborting.")

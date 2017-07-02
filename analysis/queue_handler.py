@@ -10,7 +10,7 @@ import requests
 import downloader
 import engine_check
 
-class ApiDownloadStatus(Enum):
+class ApiResponseStatus(Enum):
     """An enum that represents possible statuses after doing an API call."""
     success = 0
     no_content = 1
@@ -73,20 +73,20 @@ def next_queue_item(session, api_key, base_url):
     if response.status_code == 200:
         name = response.text.strip()
         if name != "":
-            return ApiDownloadStatus.success, name
+            return ApiResponseStatus.success, name
         else:
-            return ApiDownloadStatus.no_content, None
+            return ApiResponseStatus.no_content, None
     else:
-        return ApiDownloadStatus.http_error, None
+        return ApiResponseStatus.http_error, None
 
 def set_queue_item_as_in_progress(session, api_key, base_url, player_name):
     """Tells the web API that the script is about to process a certan player."""
     url = urllib.parse.urljoin(base_url, "/Api/QueueItemInProgress")
     response = session.post(url, data={"key": api_key, "playerName": player_name})
     if response.status_code == 200:
-        return ApiDownloadStatus.success, 200
+        return ApiResponseStatus.success, 200
     else:
-        return ApiDownloadStatus.http_error, response.status_code
+        return ApiResponseStatus.http_error, response.status_code
 
 def push_investigation_result(session, api_key, base_url, player_name, investigation_result):
     """Pushes the result of an investigation to the server."""
@@ -95,9 +95,9 @@ def push_investigation_result(session, api_key, base_url, player_name, investiga
         "key": api_key, "playerName": player_name, "games": investigation_result
     })
     if response.status_code == 200:
-        return ApiDownloadStatus.success, 200
+        return ApiResponseStatus.success, 200
     else:
-        return ApiDownloadStatus.http_error, response.status_code
+        return ApiResponseStatus.http_error, response.status_code
 
 def main(args):
     """Main method of script: where the 'real work' happens."""

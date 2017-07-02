@@ -42,7 +42,6 @@ def game_ids_from_advanced_search(first_page, url, count_to_fetch, session):
 def download_one(user_id, session):
     """Download the games of a user and store them in the right directory
     depending on whether the games are reference (cheat or legit) or investigation."""
-    print("Download started for " + user_id)
     base_url = "https://lichess.org/@/{}" \
                "/search?page={}" \
                "&clock.initMin={}" \

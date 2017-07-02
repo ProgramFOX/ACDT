@@ -4,6 +4,7 @@ filled when moderators request analysis through the web UI."""
 from enum import Enum
 import json
 import sys
+import threading
 import time
 import urllib.parse
 
@@ -129,7 +130,14 @@ def handle_queue(args, cancellation_token):
 def main():
     """Calls handle_queue and deals with cancellation when Ctrl-C is pressed."""
     cancellation_token = CancellationToken()
-    handle_queue(sys.argv, cancellation_token)
+    thr = threading.Thread(target=handle_queue, args=(sys.argv, cancellation_token))
+    thr.start()
+    while True:
+        try:
+            thr.join()
+            break
+        except KeyboardInterrupt:
+            print("Script will stop after the current investigation is done.")
 
 if __name__ == "__main__":
     main()

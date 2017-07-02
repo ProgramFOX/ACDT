@@ -79,6 +79,15 @@ def next_queue_item(session, api_key, base_url):
     else:
         return ApiDownloadStatus.http_error, None
 
+def set_queue_item_as_in_progress(session, api_key, base_url, player_name):
+    """Tells the web API that the script is about to process a certan player."""
+    url = urllib.parse.urljoin(base_url, "/Api/QueueItemInProgress")
+    response = session.post(url, data={"key": api_key, "playerName": player_name})
+    if response.status_code == 200:
+        return ApiDownloadStatus.success
+    else:
+        return ApiDownloadStatus.http_error, response.status_code
+
 def main(args):
     """Main method of script: where the 'real work' happens."""
     base_url = args[1]

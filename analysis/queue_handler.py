@@ -105,6 +105,8 @@ def push_investigation_result(session, api_key, base_url, player_name, investiga
 
 def handle_queue(args, cancellation_token):
     """Function where the 'real work', the handling of the investigation queue, happens."""
+
+    print("Queue handling started.")
     base_url = args[1]
 
     session = requests.Session()

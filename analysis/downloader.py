@@ -58,45 +58,54 @@ def download_one(user_id, session):
 
     if "account is closed" in html_response.getText():
         return DownloadStatus.closed, None
+
     if "No game found" in html_response.getText():
-        return DownloadStatus.noGames, None
+        game_ids = []
+    else:
+        found_count = int(
+            html_response.select_one(".search_status strong")
+            .getText()
+            .split(" ")[0]
+            .replace(",", "")
+        )
+        count_to_fetch = min(found_count, 50)
 
-    found_count = int(
-        html_response.select_one(".search_status strong").getText().split(" ")[0].replace(",", "")
-    )
-    count_to_fetch = min(found_count, 50)
-
-    game_ids = game_ids_from_advanced_search(html_response,
-                                             base_url.format(user_id,
-                                                             "{}",
-                                                             0,
-                                                             60,
-                                                             user_id,
-                                                             time.time() * 1000),
-                                             count_to_fetch,
-                                             session)
+        game_ids = game_ids_from_advanced_search(html_response,
+                                                 base_url.format(user_id,
+                                                                 "{}",
+                                                                 0,
+                                                                 60,
+                                                                 user_id,
+                                                                 time.time() * 1000),
+                                                 count_to_fetch,
+                                                 session)
 
     adv_search_2 = session.get(base_url.format(user_id, 1, 120, 10800, user_id, time.time() * 1000))
     html_response = bs4.BeautifulSoup(adv_search_2.text, "html.parser")
 
     if "account is closed" in html_response.getText():
         return DownloadStatus.closed, None
-    if "No game found" in html_response.getText():
+    if "No game found" in html_response.getText() and not game_ids:
         return DownloadStatus.noGames, None
-
-    found_count = int(
-        html_response.select_one(".search_status strong").getText().split(" ")[0].replace(",", "")
-    )
-    count_to_fetch = min(found_count, 50)
-    game_ids += game_ids_from_advanced_search(html_response,
-                                              base_url.format(user_id,
-                                                              "{}",
-                                                              120,
-                                                              10800,
-                                                              user_id,
-                                                              time.time() * 1000),
-                                              count_to_fetch,
-                                              session)
+    elif "No game found" in html_response.getText() and found_count != 0:
+        pass
+    else:
+        found_count = int(
+            html_response.select_one(".search_status strong")
+            .getText()
+            .split(" ")[0]
+            .replace(",", "")
+        )
+        count_to_fetch = min(found_count, 50)
+        game_ids += game_ids_from_advanced_search(html_response,
+                                                  base_url.format(user_id,
+                                                                  "{}",
+                                                                  120,
+                                                                  10800,
+                                                                  user_id,
+                                                                  time.time() * 1000),
+                                                  count_to_fetch,
+                                                  session)
 
     games = session.post("https://lichess.org/api/games?with_moves=1", data=",".join(game_ids)).text
     if "Try again later" in games:

@@ -84,7 +84,7 @@ def set_queue_item_as_in_progress(session, api_key, base_url, player_name):
     url = urllib.parse.urljoin(base_url, "/Api/QueueItemInProgress")
     response = session.post(url, data={"key": api_key, "playerName": player_name})
     if response.status_code == 200:
-        return ApiDownloadStatus.success
+        return ApiDownloadStatus.success, 200
     else:
         return ApiDownloadStatus.http_error, response.status_code
 

@@ -10,6 +10,7 @@ import requests
 
 import downloader
 import engine_check
+from cancellationtoken import CancellationToken
 
 class ApiResponseStatus(Enum):
     """An enum that represents possible statuses after doing an API call."""
@@ -100,8 +101,8 @@ def push_investigation_result(session, api_key, base_url, player_name, investiga
     else:
         return ApiResponseStatus.http_error, response.status_code
 
-def main(args):
-    """Main method of script: where the 'real work' happens."""
+def handle_queue(args, cancellation_token):
+    """Function where the 'real work', the handling of the investigation queue, happens."""
     base_url = args[1]
 
     session = requests.Session()
@@ -109,7 +110,7 @@ def main(args):
 
     stockfish, sf_info_handler = engine_check.create_stockfish_instance()
 
-    while True:
+    while not cancellation_token.is_cancellation_requested():
         next_fetched, next_player_or_http_result = next_queue_item(session, api_key, base_url)
         if next_fetched == ApiResponseStatus.no_content:
             time.sleep(120)
@@ -124,6 +125,11 @@ def main(args):
         push_investigation_result(session, api_key, base_url, next_player, result)
         print("Finished: " + next_player)
 
-if __name__ == "__main__":
+def main():
+    """Calls handle_queue and deals with cancellation when Ctrl-C is pressed."""
     import sys
-    main(sys.argv)
+    cancellation_token = CancellationToken()
+    handle_queue(sys.argv, cancellation_token)
+
+if __name__ == "__main__":
+    main()

@@ -68,6 +68,13 @@ def investigate_one_player(user_id, session, stockfish, sf_info_handler):
                                             user_id,
                                             game_id)
             )
+    elif download_status == downloader.DownloadStatus.closed:
+        print(user_id + "'s account is closed - games could not be downloaded.")
+    elif download_status == downloader.DownloadStatus.noGames:
+        print(user_id + "'s account has no games that match the script's restrictions.")
+    elif download_status == downloader.DownloadStatus.tooManyRequests:
+        time.sleep(90)
+        return investigate_one_player(user_id, session, stockfish, sf_info_handler)
     return investigations
 
 def next_queue_item(session, api_key, base_url):

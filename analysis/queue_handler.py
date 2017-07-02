@@ -3,6 +3,7 @@ filled when moderators request analysis through the web UI."""
 
 from enum import Enum
 import json
+import time
 import urllib.parse
 
 import requests
@@ -77,7 +78,7 @@ def next_queue_item(session, api_key, base_url):
         else:
             return ApiResponseStatus.no_content, None
     else:
-        return ApiResponseStatus.http_error, None
+        return ApiResponseStatus.http_error, response.status_code
 
 def set_queue_item_as_in_progress(session, api_key, base_url, player_name):
     """Tells the web API that the script is about to process a certan player."""
@@ -107,6 +108,21 @@ def main(args):
     api_key = load_api_key()
 
     stockfish, sf_info_handler = engine_check.create_stockfish_instance()
+
+    while True:
+        next_fetched, next_player_or_http_result = next_queue_item(session, api_key, base_url)
+        if next_fetched == ApiResponseStatus.no_content:
+            time.sleep(120)
+            continue
+        elif next_fetched == ApiResponseStatus.http_error:
+            print("ERROR: Status code " + str(next_player_or_http_result) + ". Aborting.")
+            break
+        next_player = next_player_or_http_result
+        print("Working on: " + next_player)
+        set_queue_item_as_in_progress(session, api_key, base_url, next_player)
+        result = investigate_one_player(next_player, session, stockfish, sf_info_handler)
+        push_investigation_result(session, api_key, base_url, next_player, result)
+        print("Finished: " + next_player)
 
 if __name__ == "__main__":
     import sys

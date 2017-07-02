@@ -3,6 +3,7 @@ filled when moderators request analysis through the web UI."""
 
 from enum import Enum
 import json
+import sys
 import time
 import urllib.parse
 
@@ -127,7 +128,6 @@ def handle_queue(args, cancellation_token):
 
 def main():
     """Calls handle_queue and deals with cancellation when Ctrl-C is pressed."""
-    import sys
     cancellation_token = CancellationToken()
     handle_queue(sys.argv, cancellation_token)
 

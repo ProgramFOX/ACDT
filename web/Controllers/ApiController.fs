@@ -8,6 +8,8 @@ open AntichessCheatDetection.Modules.Investigate
 
 open System.Collections.Generic
 
+open Newtonsoft.Json
+
 type ApiController(apiKeyDbRepo: IApiKeyDbRepo, queueDbRepo: IQueueDbRepo, investigateDbRepo: IInvestigateDbRepo) =
     inherit Controller()
 
@@ -36,6 +38,9 @@ type ApiController(apiKeyDbRepo: IApiKeyDbRepo, queueDbRepo: IQueueDbRepo, inves
         | _ -> StatusCodeResult(500)
     
     [<Route("/Api/PlayerGamesProcessed")>]
-    member this.PlayerGamesProcessed(key: string, playerName: string, games: IEnumerable<Investigation>) =
-        investigateDbRepo.InsertInvestigations games
-        queueDbRepo.SetAsProcessed(playerName.ToLowerInvariant())
+    member this.PlayerGamesProcessed(key: string, playerName: string, games: string) =
+        let investigations = JsonConvert.DeserializeObject<IEnumerable<Investigation>>(games, UnixDateTimeConverter())
+        investigateDbRepo.InsertInvestigations investigations
+        match queueDbRepo.SetAsProcessed(playerName.ToLowerInvariant()) with
+        | true -> StatusCodeResult(200)
+        | _ -> StatusCodeResult(500)

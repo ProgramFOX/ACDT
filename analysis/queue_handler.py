@@ -102,8 +102,9 @@ def set_queue_item_as_in_progress(session, api_key, base_url, player_name):
 def push_investigation_result(session, api_key, base_url, player_name, investigation_result):
     """Pushes the result of an investigation to the server."""
     url = urllib.parse.urljoin(base_url, "/Api/PlayerGamesProcessed")
+    investigation_result_json = json.dumps(investigation_result)
     response = session.post(url, data={
-        "key": api_key, "playerName": player_name, "games": investigation_result
+        "key": api_key, "playerName": player_name, "games": investigation_result_json
     })
     if response.status_code == 200:
         return ApiResponseStatus.success, 200

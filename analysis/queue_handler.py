@@ -88,6 +88,17 @@ def set_queue_item_as_in_progress(session, api_key, base_url, player_name):
     else:
         return ApiDownloadStatus.http_error, response.status_code
 
+def push_investigation_result(session, api_key, base_url, player_name, investigation_result):
+    """Pushes the result of an investigation to the server."""
+    url = urllib.parse.urljoin(base_url, "/Api/PlayerGamesProcessed")
+    response = session.post(url, data={
+        "key": api_key, "playerName": player_name, "games": investigation_result
+    })
+    if response.status_code == 200:
+        return ApiDownloadStatus.success, 200
+    else:
+        return ApiDownloadStatus.http_error, response.status_code
+
 def main(args):
     """Main method of script: where the 'real work' happens."""
     base_url = args[1]

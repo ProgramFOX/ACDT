@@ -133,13 +133,20 @@ def main():
     """Calls handle_queue and deals with cancellation when Ctrl-C is pressed."""
     cancellation_token = CancellationToken()
     thr = threading.Thread(target=handle_queue, args=(sys.argv, cancellation_token))
+    thr.daemon = True
     thr.start()
     while True:
         try:
-            thr.join()
-            break
-        except KeyboardInterrupt:
-            print("Script will stop after the current investigation is done.")
+            command = input()
+            if command == "cancel":
+                print("The script will stop after the current investigation is done.")
+                cancellation_token.request_cancellation()
+                thr.join()
+                sys.exit(0)
+            elif command == "stop":
+                sys.exit(1)
+        except (KeyboardInterrupt, EOFError):
+            sys.exit(1)
 
 if __name__ == "__main__":
     main()

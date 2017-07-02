@@ -137,7 +137,9 @@ def handle_queue(args, cancellation_token):
         print("Working on: " + next_player)
         set_queue_item_as_in_progress(session, api_key, base_url, next_player)
         result = investigate_one_player(next_player, session, stockfish, sf_info_handler)
-        push_investigation_result(session, api_key, base_url, next_player, result)
+        soe, code = push_investigation_result(session, api_key, base_url, next_player, result)
+        if soe == ApiResponseStatus.http_error:
+            print("HTTP error when pushing investigation: " + str(code))
         print("Finished: " + next_player)
 
 def main():

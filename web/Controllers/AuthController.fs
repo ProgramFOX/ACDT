@@ -18,7 +18,7 @@ type AuthController(settings : IOptions<Settings>) =
     static member httpClient = new HttpClient()
 
     [<Route("/Auth/Login")>]
-    member this.Login(code : string, error : string) =
+    member this.Login(code : string, error : string, state : string) =
         this.ViewData.["error"] <- error
         match System.String.IsNullOrWhiteSpace(code) with
         | true -> this.View() :> IActionResult

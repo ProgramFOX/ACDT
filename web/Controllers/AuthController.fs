@@ -10,6 +10,7 @@ open System.Net.Http
 open AntichessCheatDetection.Modules.Configuration
 
 open Newtonsoft.Json
+open Newtonsoft.Json.Linq
 
 type AuthController(settings : IOptions<Settings>) =
     inherit Controller()
@@ -24,12 +25,12 @@ type AuthController(settings : IOptions<Settings>) =
         | true -> this.View() :> IActionResult
         | false ->
             let oauthUrl = System.String.Format("https://slack.com/api/oauth.access?client_id={0}&client_secret={1}&code={2}", extractedSettings.ClientID, extractedSettings.ClientSecret, code)
-            let authResult = JsonConvert.DeserializeObject<Dictionary<string, obj>>(AuthController.httpClient.GetAsync(oauthUrl).Result.Content.ReadAsStringAsync().Result)
-            match authResult.["ok"] :?> bool with
+            let authResult = JsonConvert.DeserializeObject<Dictionary<string, JObject>>(AuthController.httpClient.GetAsync(oauthUrl).Result.Content.ReadAsStringAsync().Result)
+            match authResult.["ok"].ToObject<bool>() with
             | false -> this.RedirectToAction("Login", "Auth") :> IActionResult
             | true ->
-                match string authResult.["team_id"] with
-                | "T0HL8V171" ->
+                match authResult.["team"].["id"].ToObject<string>() + "," + authResult.["team"].["domain"].ToObject<string>() with
+                | "T0HL8V171,lichess" ->
                     this.HttpContext.Session.SetInt32("auth", 1)
                     this.RedirectToAction("Index", "Home") :> IActionResult
                 | _ ->

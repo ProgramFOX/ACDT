@@ -3,12 +3,21 @@
     <head>
         <meta charset="utf-8">
         <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+        <link href='@Url.Content("~/styles/main.css")' rel='stylesheet' type='text/css'>
         <title>@RenderSection("Title") | Antichess Cheat Detection Tools</title>
         @if (IsSectionDefined("AddToHead")) {
             RenderSection("AddTohead");
         }
     </head>
     <body>
+        <div id="topbar">
+            <ul id="topbar-menu">
+                <li>@Html.ActionLink("Home", "Index", "Home", null, null)</li>
+                <li>@Html.ActionLink("Reference", "Index", "Reference")</li>
+                <li>@Html.ActionLink("Player", "Index", "Player")</li>
+                <li>@Html.ActionLink("Investigate", "Index", "Investigate")</li>
+            </ul>
+        </div>
         @RenderBody()
     </body>
 </html>

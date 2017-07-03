@@ -1,0 +1,33 @@
+#topbar-menu {
+    width: 70%;
+    max-width: 1100px;
+    margin: auto;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 0;
+}
+
+    #topbar-menu > li {
+        display: inline;
+        position: relative;
+    }
+
+        #topbar-menu > li > a {
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+            padding: 15px;
+        }
+
+            #topbar-menu > li > a:hover {
+                background-color: #0854ce;
+            }
+
+#topbar {
+    background-color: #3a74d1;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+}

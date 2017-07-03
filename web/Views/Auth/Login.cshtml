@@ -1,5 +1,5 @@
 @section Title{Authenticate}
-@if (!string.IsNullOrWhiteSpace(ViewData["error"]))
+@if (!string.IsNullOrWhiteSpace(ViewData["error"] as string))
 {
     <strong>Error: @ViewData["error"]</strong>
 }

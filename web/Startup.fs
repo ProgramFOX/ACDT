@@ -25,6 +25,7 @@ type Startup private () =
             ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("config.json")
+                .AddJsonFile("config.secret.json")
         this.Configuration <- builder.Build()
 
     member this.ConfigureServices(services: IServiceCollection) =

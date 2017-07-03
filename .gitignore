@@ -8,3 +8,4 @@ stockfish*
 secret/
 __pycache__/
 /data/
+*.secret.*

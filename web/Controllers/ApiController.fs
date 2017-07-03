@@ -11,7 +11,7 @@ open System.Collections.Generic
 open Newtonsoft.Json
 
 type ApiController(apiKeyDbRepo: IApiKeyDbRepo, queueDbRepo: IQueueDbRepo, investigateDbRepo: IInvestigateDbRepo) =
-    inherit NeedsAuthController()
+    inherit Controller()
 
     override this.OnActionExecuting (context : ActionExecutingContext) =
         match context.HttpContext.Request.Method.ToUpperInvariant() with

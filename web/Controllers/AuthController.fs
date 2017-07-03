@@ -25,7 +25,7 @@ type AuthController(settings : IOptions<Settings>) =
         | true -> this.View() :> IActionResult
         | false ->
             let oauthUrl = System.String.Format("https://slack.com/api/oauth.access?client_id={0}&client_secret={1}&code={2}", extractedSettings.ClientID, extractedSettings.ClientSecret, code)
-            let authResult = JsonConvert.DeserializeObject<Dictionary<string, JObject>>(AuthController.httpClient.GetAsync(oauthUrl).Result.Content.ReadAsStringAsync().Result)
+            let authResult = JsonConvert.DeserializeObject<Dictionary<string, JToken>>(AuthController.httpClient.GetAsync(oauthUrl).Result.Content.ReadAsStringAsync().Result)
             match authResult.["ok"].ToObject<bool>() with
             | false -> this.RedirectToAction("Login", "Auth") :> IActionResult
             | true ->

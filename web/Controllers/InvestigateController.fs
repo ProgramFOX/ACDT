@@ -5,7 +5,7 @@ open Microsoft.AspNetCore.Mvc
 open AntichessCheatDetection.Modules.Investigate
 
 type InvestigateController(investigateDbRepo: IInvestigateDbRepo, queueDbRepo: IQueueDbRepo) =
-    inherit Controller()
+    inherit NeedsAuthController()
 
     [<Route("/Investigate")>]
     member this.Index() =

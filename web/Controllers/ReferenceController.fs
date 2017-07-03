@@ -4,7 +4,7 @@ open Microsoft.AspNetCore.Mvc
 open AntichessCheatDetection.Modules.Reference
 
 type ReferenceController(referenceDbRepo : IReferenceDbRepo) =
-    inherit Controller()
+    inherit NeedsAuthController()
 
     let validCheatOrLegitInput input error =
         match error with

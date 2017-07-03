@@ -15,6 +15,7 @@
     <Compile Include="modules/investigate/QueueDbRepo.fs" />
     <Compile Include="modules/player/*.fs" />
     <Compile Include="modules/api/*.fs" />
+    <Compile Include="Controllers/NeedsAuthController.fs" />
     <Compile Include="Controllers/*.fs" />
     <Compile Include="Startup.fs" />
     <Compile Include="Program.fs" />
@@ -34,6 +35,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="1.1.2" />
   </ItemGroup>
 
   <ItemGroup>

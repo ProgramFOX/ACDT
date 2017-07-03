@@ -3,7 +3,7 @@ namespace AntichessCheatDetection.Controllers
 open Microsoft.AspNetCore.Mvc
 
 type HomeController() =
-    inherit Controller()
+    inherit NeedsAuthController()
 
     [<Route("/")>]
     member this.Index() =

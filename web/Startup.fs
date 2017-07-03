@@ -30,6 +30,8 @@ type Startup private () =
     member this.ConfigureServices(services: IServiceCollection) =
         services.AddMvc() |> ignore
 
+        services.AddSession() |> ignore
+
         services.AddOptions() |> ignore
         if isNull(this.Configuration) then
             raise(System.Exception("Warning: Configuration is null."))
@@ -47,6 +49,8 @@ type Startup private () =
             app.UseBrowserLink() |> ignore
 
         app.UseStaticFiles() |> ignore
+
+        app.UseSession() |> ignore
 
         app.UseMvc() |> ignore
     

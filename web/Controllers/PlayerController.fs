@@ -7,7 +7,7 @@ open AntichessCheatDetection.Modules.Investigate
 open AntichessCheatDetection.Modules.Player
 
 type PlayerController(referenceDbRepo: IReferenceDbRepo, investigateDbRepo: IInvestigateDbRepo) =
-    inherit Controller()
+    inherit NeedsAuthController()
 
     [<Route("/Player")>]
     member this.Index() = this.View()
